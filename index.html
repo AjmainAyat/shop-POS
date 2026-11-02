@@ -56,7 +56,8 @@
             </div>
             
             <div class="flex items-center gap-2.5 flex-wrap">
-                <button id="installAppBtn" onclick="installApp()" class="neon-app-btn bg-blue-600 hover:bg-blue-500 text-white text-xs px-4 py-2.5 rounded-xl font-bold tracking-wide shadow-xl transition flex items-center gap-1.5 hidden">
+                <!-- Permanent Neon App Download Button -->
+                <button id="installAppBtn" onclick="installApp()" class="neon-app-btn bg-blue-600 hover:bg-blue-500 text-white text-xs px-4 py-2.5 rounded-xl font-bold tracking-wide shadow-xl transition flex items-center gap-1.5">
                     📥 <span data-bn="ডাউনলোড অ্যাপ" data-en="Download App">ডাউনলোড অ্যাপ</span>
                 </button>
 
@@ -158,13 +159,11 @@
                         <div id="demandSuggestionsBox" class="absolute z-30 bg-slate-800 border border-slate-700 rounded-xl shadow-2xl mt-1 hidden max-h-36 overflow-y-auto text-xs w-full"></div>
                     </div>
 
-                    <!-- Product Variation / Size (Optional) -->
                     <div>
                         <label class="block text-xs font-medium text-slate-300 mb-1" data-bn="সাইজ / এমএল / ভেরিয়েশন (ঐচ্ছিক)" data-en="Size / ML / Variation (Optional)">সাইজ / এমএল / ভেরিয়েশন (ঐচ্ছিক)</label>
                         <input type="text" id="pVariation" autocomplete="off" class="w-full p-2.5 text-sm bg-slate-900 border border-slate-700 rounded-xl outline-none text-white placeholder-slate-500" placeholder="যেমন: 30ml, 50ml বা বড় সাইজ">
                     </div>
 
-                    <!-- Product Image Capture / Upload Option (Camera Icon) -->
                     <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-700 space-y-2">
                         <label class="block text-xs font-medium text-slate-300 flex items-center justify-between">
                             <span data-bn="📸 পণ্যের ছবি (ক্যামেরা বা গ্যালারি)" data-en="📸 Product Image">📸 পণ্যের ছবি (ক্যামেরা বা গ্যালারি)</span>
@@ -665,7 +664,6 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    // Compress image using canvas for high quality & speed
                     const img = new Image();
                     img.src = e.target.result;
                     img.onload = function() {
@@ -673,7 +671,7 @@
                         const ctx = canvas.getContext('2d');
                         let width = img.width;
                         let height = img.height;
-                        const maxDim = 600; // Optimal dimension for fast loading & clear quality
+                        const maxDim = 600;
                         if (width > height && width > maxDim) {
                             height *= maxDim / width;
                             width = maxDim;
@@ -1328,27 +1326,21 @@
             if(activeBtn) activeBtn.className = "py-2 px-4 font-semibold text-sm text-emerald-400 border-b-2 border-emerald-500 focus:outline-none transition";
         }
 
+        // Permanent Manual App Install Prompt / Instruction Trigger
         let deferredPrompt;
-        const installBtn = document.getElementById('installAppBtn');
-
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            installBtn.classList.remove('hidden');
         });
 
         function installApp() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted the install prompt');
-                    }
                     deferredPrompt = null;
-                    installBtn.classList.add('hidden');
                 });
             } else {
-                alert(currentLang === 'bn' ? "আপনার ব্রাউজার মেনু (থ্রি-ডট) থেকে 'Add to Home screen' বা 'Install App' অপশন সিলেক্ট করে অ্যাপটি ইন্সটল করে নিন!" : "Please install the app from your browser menu ('Add to Home screen' or 'Install App').");
+                alert(currentLang === 'bn' ? "আপনার ব্রাউজার মেনু (থ্রি-ডট ⁝) থেকে 'Add to Home screen' বা 'Install App' অপشن সিলেক্ট করে অ্যাপটি ইন্সটল করে নিন!" : "Please install the app from your browser menu ('Add to Home screen' or 'Install App').");
             }
         }
 
