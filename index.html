@@ -24,16 +24,6 @@
             animation: glowing-border 2s infinite ease-in-out;
             border-width: 2px;
         }
-
-        @keyframes neon-pulse-btn {
-            0% { box-shadow: 0 0 5px #3b82f6, 0 0 10px #3b82f6; border-color: #60a5fa; }
-            50% { box-shadow: 0 0 20px #2563eb, 0 0 30px #60a5fa; border-color: #93c5fd; }
-            100% { box-shadow: 0 0 5px #3b82f6, 0 0 10px #3b82f6; border-color: #60a5fa; }
-        }
-        .neon-app-btn {
-            animation: neon-pulse-btn 1.5s infinite ease-in-out;
-            border: 2px solid #60a5fa;
-        }
     </style>
 </head>
 <body id="mainBody" class="bg-slate-900 text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
@@ -56,11 +46,6 @@
             </div>
             
             <div class="flex items-center gap-2.5 flex-wrap">
-                <!-- Permanent Neon App Download Button -->
-                <button id="installAppBtn" onclick="installApp()" class="neon-app-btn bg-blue-600 hover:bg-blue-500 text-white text-xs px-4 py-2.5 rounded-xl font-bold tracking-wide shadow-xl transition flex items-center gap-1.5">
-                    📥 <span data-bn="ডাউনলোড অ্যাপ" data-en="Download App">ডাউনলোড অ্যাপ</span>
-                </button>
-
                 <button onclick="toggleLanguage()" id="langToggleBtn" class="bg-indigo-500 hover:bg-indigo-400 text-white text-xs px-3.5 py-2 rounded-xl font-bold shadow transition">
                     🌐 English
                 </button>
@@ -1324,24 +1309,6 @@
             document.getElementById(tabName + 'Content').classList.remove('hidden');
             const activeBtn = document.getElementById('btn' + tabName.charAt(0).toUpperCase() + tabName.slice(1));
             if(activeBtn) activeBtn.className = "py-2 px-4 font-semibold text-sm text-emerald-400 border-b-2 border-emerald-500 focus:outline-none transition";
-        }
-
-        // Permanent Manual App Install Prompt / Instruction Trigger
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-        });
-
-        function installApp() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    deferredPrompt = null;
-                });
-            } else {
-                alert(currentLang === 'bn' ? "আপনার ব্রাউজার মেনু (থ্রি-ডট ⁝) থেকে 'Add to Home screen' বা 'Install App' অপشن সিলেক্ট করে অ্যাপটি ইন্সটল করে নিন!" : "Please install the app from your browser menu ('Add to Home screen' or 'Install App').");
-            }
         }
 
         renderAll();
